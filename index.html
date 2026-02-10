@@ -92,18 +92,21 @@
             border-left: 2.5px solid #000 !important;
         }
 
-        /* リンク行のスタイル */
-        .link-row {
-            padding: 10px;
-            background-color: #fff;
+        /* リンク領域を今日の日付に合わせて配置 */
+        #link-wrapper {
+            position: relative; /* テーブルの下に配置 */
+            padding: 15px 0;
+            width: max-content; /* テーブルの幅に合わせる */
         }
         .link-text {
-            display: inline-block;
+            position: absolute; /* JavaScriptで今日の日付の真下に動かす */
+            transform: translateX(-50%); /* 中央揃え */
             color: #007bff;
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: bold;
-            padding: 10px 5px;
+            white-space: nowrap;
+            padding: 10px;
         }
     </style>
 </head>
@@ -119,8 +122,8 @@
         <tbody id="table-body"></tbody>
     </table>
     
-    <div class="link-row">
-        <a href="https://www.kodomocube.com/" target="_blank" class="link-text">
+    <div id="link-wrapper">
+        <a href="https://www.kodomocube.com/" target="_blank" class="link-text" id="today-link">
             こどもキューブちゃんねるはこちら
         </a>
     </div>
@@ -189,9 +192,16 @@
 
     window.addEventListener('load', () => {
         const todayHeader = document.querySelector('th.today-col');
+        const todayLink = document.getElementById('today-link');
+        
         if (todayHeader) {
+            // 今日を画面中央にスクロール
             const offset = todayHeader.offsetLeft - (window.innerWidth / 2) + (todayHeader.offsetWidth / 2);
             container.scrollLeft = offset;
+
+            // リンクを今日の列の真下に配置（中央揃え）
+            const linkPos = todayHeader.offsetLeft + (todayHeader.offsetWidth / 2);
+            todayLink.style.left = linkPos + "px";
         }
     });
 </script>
