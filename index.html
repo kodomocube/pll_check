@@ -22,7 +22,6 @@
             flex-direction: column;
             overflow: hidden;
         }
-        /* 表のスクロールエリア：リンクボタンの分を除いた高さにする */
         .table-wrapper {
             flex: 1;
             overflow: auto;
@@ -38,7 +37,7 @@
             border: 1.5px solid var(--border-color); 
             text-align: center;
             padding: 0;
-            height: 25px; /* さらに少し詰めました */
+            height: 25px; 
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
@@ -93,31 +92,18 @@
             border-left: 2.5px solid #000 !important;
         }
 
-        /* 表のすぐ下に配置される目立つリンクエリア */
-        .link-area {
+        /* リンク行のスタイル */
+        .link-row {
             padding: 10px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #ddd;
-            text-align: center;
-            z-index: 20;
+            background-color: #fff;
         }
-        .btn-link {
-            display: block;
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
+        .link-text {
+            display: inline-block;
+            color: #007bff;
             text-decoration: none;
-            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .btn-url {
-            display: block;
-            margin-top: 5px;
-            font-size: 0.65rem;
-            color: #4dabf7;
-            text-decoration: underline;
+            padding: 10px 5px;
         }
     </style>
 </head>
@@ -132,13 +118,12 @@
         </thead>
         <tbody id="table-body"></tbody>
     </table>
-</div>
-
-<div class="link-area">
-    <a href="https://www.kodomocube.com/" target="_blank" class="btn-link">
-        手順を確認する (KODOMO CUBE)
-    </a>
-    <a href="https://www.kodomocube.com/" target="_blank" class="btn-url">https://www.kodomocube.com/</a>
+    
+    <div class="link-row">
+        <a href="https://www.kodomocube.com/" target="_blank" class="link-text">
+            こどもキューブちゃんねるはこちら
+        </a>
+    </div>
 </div>
 
 <script>
