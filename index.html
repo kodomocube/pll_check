@@ -11,7 +11,7 @@
             --checked-bg: #2ecc71;
             --border-color: #555555;
             --pll-bg: #f2f2f2;
-            --col-width: calc((100vw - 60px) / 15);
+            --col-width: calc((100vw - 50px) / 15);
         }
         body {
             font-family: -apple-system, sans-serif;
@@ -36,7 +36,8 @@
             border: 1.5px solid var(--border-color); 
             text-align: center;
             padding: 0;
-            height: 38px;
+            /* 行の高さをさらに圧縮（38px -> 30px） */
+            height: 30px; 
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
@@ -45,19 +46,18 @@
             left: 0;
             background-color: var(--pll-bg);
             z-index: 10;
-            width: 60px;
-            font-size: 0.85rem;
+            width: 50px;
+            font-size: 0.75rem;
             font-weight: bold;
         }
-        /* 「PLL」という文字の色を青に変更 */
         th.pll-name {
             color: #4dabf7; 
             z-index: 12;
         }
         .date-cell {
             width: var(--col-width);
-            min-width: 45px;
-            font-size: 0.7rem;
+            min-width: 40px;
+            font-size: 0.65rem;
         }
         th {
             background-color: var(--header-bg);
@@ -65,28 +65,23 @@
             position: sticky;
             top: 0;
             z-index: 11;
+            height: 34px;
         }
         
         .sun { color: #ff5e5e; background-color: #fff5f5; }
         .sat { color: #4dabf7; background-color: #f0f7ff; }
         
-        /* 今日の強調（データ行のみに適用） */
         td.today-mark {
             background-color: #fff9db !important;
-            outline: 3px solid #f1c40f;
-            outline-offset: -3px;
-        }
-
-        /* ヘッダーの今日の日付（強調なし・文字色維持） */
-        th.today-col {
-            background-color: var(--header-bg);
+            outline: 2px solid #f1c40f;
+            outline-offset: -2px;
         }
 
         td.checked {
             background-color: var(--checked-bg) !important;
             color: white;
             position: relative;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
         td.checked::after {
             content: '〇';
@@ -94,7 +89,22 @@
         }
 
         .month-first {
-            border-left: 3px solid #000 !important;
+            border-left: 2.5px solid #000 !important;
+        }
+
+        /* フッターリンク */
+        .footer {
+            background: #f8f9fa;
+            border-top: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .footer a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 1px solid #4dabf7;
         }
     </style>
 </head>
@@ -109,6 +119,10 @@
         </thead>
         <tbody id="table-body"></tbody>
     </table>
+</div>
+
+<div class="footer">
+    手順の確認や復習には ➔ <a href="https://kodomocube.com/" target="_blank">KODOMO CUBE</a> がおすすめです
 </div>
 
 <script>
@@ -133,18 +147,13 @@
         const th = document.createElement('th');
         th.className = 'date-cell';
         if (date.getDate() === 1) th.classList.add('month-first');
-        
         const m = date.getMonth() + 1;
         const d = date.getDate();
         const w = ["日", "月", "火", "水", "木", "金", "土"][date.getDay()];
-        
         th.innerHTML = `${m}/${d}<br>${w}`;
         if (date.getDay() === 0) th.classList.add('sun');
         if (date.getDay() === 6) th.classList.add('sat');
-        
-        // ヘッダー用クラス（スクロール位置特定用）
         if (date.getTime() === today.getTime()) th.classList.add('today-col');
-        
         headerRow.appendChild(th);
     });
 
@@ -159,13 +168,9 @@
             const td = document.createElement('td');
             td.className = 'date-cell';
             if (date.getDate() === 1) td.classList.add('month-first');
-            
             const dateStr = date.toISOString().split('T')[0];
             const storageKey = `pll_${pll}_${dateStr}`;
-
             if (localStorage.getItem(storageKey)) td.classList.add('checked');
-            
-            // データ行（td）のみに今日のハイライトを適用
             if (date.getTime() === today.getTime()) td.classList.add('today-mark');
 
             td.onclick = function() {
@@ -192,4 +197,3 @@
 
 </body>
 </html>
-
