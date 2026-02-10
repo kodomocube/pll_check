@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PLL Practice Tracker</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --header-bg: #1a1a1a;
+            --checked-bg: #2ecc71;
+            --border-color: #555555;
+            --pll-bg: #f2f2f2;
+            --col-width: calc((100vw - 60px) / 15);
+        }
+        body {
+            font-family: -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .table-wrapper {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        table {
+            border-collapse: collapse;
+            width: max-content;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1.5px solid var(--border-color); 
+            text-align: center;
+            padding: 0;
+            height: 38px;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .pll-name {
+            position: sticky;
+            left: 0;
+            background-color: var(--pll-bg);
+            z-index: 10;
+            width: 60px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        /* 「PLL」という文字の色を青に変更 */
+        th.pll-name {
+            color: #4dabf7; 
+            z-index: 12;
+        }
+        .date-cell {
+            width: var(--col-width);
+            min-width: 45px;
+            font-size: 0.7rem;
+        }
+        th {
+            background-color: var(--header-bg);
+            color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 11;
+        }
+        
+        .sun { color: #ff5e5e; background-color: #fff5f5; }
+        .sat { color: #4dabf7; background-color: #f0f7ff; }
+        
+        /* 今日の強調（データ行のみに適用） */
+        td.today-mark {
+            background-color: #fff9db !important;
+            outline: 3px solid #f1c40f;
+            outline-offset: -3px;
+        }
+
+        /* ヘッダーの今日の日付（強調なし・文字色維持） */
+        th.today-col {
+            background-color: var(--header-bg);
+        }
+
+        td.checked {
+            background-color: var(--checked-bg) !important;
+            color: white;
+            position: relative;
+            font-size: 1.2rem;
+        }
+        td.checked::after {
+            content: '〇';
+            font-weight: bold;
+        }
+
+        .month-first {
+            border-left: 3px solid #000 !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="table-wrapper" id="scroll-container">
+    <table id="main-table">
+        <thead>
+            <tr id="header-row">
+                <th class="pll-name">PLL</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+</div>
+
+<script>
+    const pllList = ["Aa", "Ab", "E", "F", "Ga", "Gb", "Gc", "Gd", "H", "Ja", "Jb", "Na", "Nb", "Ra", "Rb", "T", "Ua", "Ub", "V", "Y", "Z"];
+    const startDate = new Date(2025, 0, 1);
+    const endDate = new Date(2030, 11, 31);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const headerRow = document.getElementById('header-row');
+    const tableBody = document.getElementById('table-body');
+    const container = document.getElementById('scroll-container');
+
+    let dates = [];
+    let curr = new Date(startDate);
+    while (curr <= endDate) {
+        dates.push(new Date(curr));
+        curr.setDate(curr.getDate() + 1);
+    }
+
+    dates.forEach(date => {
+        const th = document.createElement('th');
+        th.className = 'date-cell';
+        if (date.getDate() === 1) th.classList.add('month-first');
+        
+        const m = date.getMonth() + 1;
+        const d = date.getDate();
+        const w = ["日", "月", "火", "水", "木", "金", "土"][date.getDay()];
+        
+        th.innerHTML = `${m}/${d}<br>${w}`;
+        if (date.getDay() === 0) th.classList.add('sun');
+        if (date.getDay() === 6) th.classList.add('sat');
+        
+        // ヘッダー用クラス（スクロール位置特定用）
+        if (date.getTime() === today.getTime()) th.classList.add('today-col');
+        
+        headerRow.appendChild(th);
+    });
+
+    pllList.forEach(pll => {
+        const tr = document.createElement('tr');
+        const tdName = document.createElement('td');
+        tdName.textContent = pll;
+        tdName.className = 'pll-name';
+        tr.appendChild(tdName);
+
+        dates.forEach(date => {
+            const td = document.createElement('td');
+            td.className = 'date-cell';
+            if (date.getDate() === 1) td.classList.add('month-first');
+            
+            const dateStr = date.toISOString().split('T')[0];
+            const storageKey = `pll_${pll}_${dateStr}`;
+
+            if (localStorage.getItem(storageKey)) td.classList.add('checked');
+            
+            // データ行（td）のみに今日のハイライトを適用
+            if (date.getTime() === today.getTime()) td.classList.add('today-mark');
+
+            td.onclick = function() {
+                const isChecked = this.classList.toggle('checked');
+                if (isChecked) {
+                    localStorage.setItem(storageKey, '1');
+                } else {
+                    localStorage.removeItem(storageKey);
+                }
+            };
+            tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+    });
+
+    window.addEventListener('load', () => {
+        const todayHeader = document.querySelector('th.today-col');
+        if (todayHeader) {
+            const offset = todayHeader.offsetLeft - (window.innerWidth / 2) + (todayHeader.offsetWidth / 2);
+            container.scrollLeft = offset;
+        }
+    });
+</script>
+
+</body>
+</html>
+
