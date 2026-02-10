@@ -132,14 +132,14 @@
 </div>
 
 <script>
-    // 指定の順序に並べ替え
+    // 並び替え: T, Yを先頭。A, EをVの次へ移動。
     const pllList = [
+        "T", "Y",               // 先頭
         "Ua", "Ub", "H", "Z",   // エッジ
-        "Aa", "Ab", "E",         // コーナー
-        "T", "Y",                // 隣接(T)と対角(Y)をセットに
-        "Ja", "Jb", "Ra", "Rb", "F", "V",
-        "Ga", "Gb", "Gc", "Gd",  // G-Perms
-        "Na", "Nb"               // N-Permsを最後に
+        "Ja", "Jb", "Ra", "Rb", "F", "V", 
+        "Aa", "Ab", "E",        // Vの次に移動
+        "Ga", "Gb", "Gc", "Gd", // G-Perms
+        "Na", "Nb"              // 最後
     ];
     
     const startDate = new Date(2025, 0, 1);
