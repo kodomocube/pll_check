@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PLL Practice Tracker</title>
+    <title>PLL Daily Check List</title>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -21,6 +21,12 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+        h1 {
+            font-size: 1.1rem;
+            text-align: center;
+            margin: 8px 0;
+            color: #333;
         }
         .table-wrapper {
             flex: 1;
@@ -67,16 +73,13 @@
             z-index: 11;
             height: 30px;
         }
-        
         .sun { color: #ff5e5e; background-color: #fff5f5; }
         .sat { color: #4dabf7; background-color: #f0f7ff; }
-        
         td.today-mark {
             background-color: #fff9db !important;
             outline: 2px solid #f1c40f;
             outline-offset: -2px;
         }
-
         td.checked {
             background-color: var(--checked-bg) !important;
             color: white;
@@ -87,20 +90,17 @@
             content: '〇';
             font-weight: bold;
         }
-
         .month-first {
             border-left: 2.5px solid #000 !important;
         }
-
-        /* リンク領域を今日の日付に合わせて配置 */
         #link-wrapper {
-            position: relative; /* テーブルの下に配置 */
-            padding: 15px 0;
-            width: max-content; /* テーブルの幅に合わせる */
+            position: relative;
+            padding: 15px 0 30px 0;
+            width: max-content;
         }
         .link-text {
-            position: absolute; /* JavaScriptで今日の日付の真下に動かす */
-            transform: translateX(-50%); /* 中央揃え */
+            position: absolute;
+            transform: translateX(-50%);
             color: #007bff;
             text-decoration: none;
             font-size: 0.85rem;
@@ -111,6 +111,8 @@
     </style>
 </head>
 <body>
+
+<h1>PLL Daily Check List</h1>
 
 <div class="table-wrapper" id="scroll-container">
     <table id="main-table">
@@ -130,7 +132,16 @@
 </div>
 
 <script>
-    const pllList = ["Aa", "Ab", "E", "F", "Ga", "Gb", "Gc", "Gd", "H", "Ja", "Jb", "Na", "Nb", "Ra", "Rb", "T", "Ua", "Ub", "V", "Y", "Z"];
+    // 指定の順序に並べ替え
+    const pllList = [
+        "Ua", "Ub", "H", "Z",   // エッジ
+        "Aa", "Ab", "E",         // コーナー
+        "T", "Y",                // 隣接(T)と対角(Y)をセットに
+        "Ja", "Jb", "Ra", "Rb", "F", "V",
+        "Ga", "Gb", "Gc", "Gd",  // G-Perms
+        "Na", "Nb"               // N-Permsを最後に
+    ];
+    
     const startDate = new Date(2025, 0, 1);
     const endDate = new Date(2030, 11, 31);
     const today = new Date();
@@ -195,11 +206,9 @@
         const todayLink = document.getElementById('today-link');
         
         if (todayHeader) {
-            // 今日を画面中央にスクロール
             const offset = todayHeader.offsetLeft - (window.innerWidth / 2) + (todayHeader.offsetWidth / 2);
             container.scrollLeft = offset;
 
-            // リンクを今日の列の真下に配置（中央揃え）
             const linkPos = todayHeader.offsetLeft + (todayHeader.offsetWidth / 2);
             todayLink.style.left = linkPos + "px";
         }
