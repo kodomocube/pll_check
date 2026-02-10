@@ -22,6 +22,7 @@
             flex-direction: column;
             overflow: hidden;
         }
+        /* 表のスクロールエリア：リンクボタンの分を除いた高さにする */
         .table-wrapper {
             flex: 1;
             overflow: auto;
@@ -37,7 +38,7 @@
             border: 1.5px solid var(--border-color); 
             text-align: center;
             padding: 0;
-            height: 26px; /* 21種を収めるためさらに圧縮 */
+            height: 25px; /* さらに少し詰めました */
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
@@ -92,34 +93,31 @@
             border-left: 2.5px solid #000 !important;
         }
 
-        /* 目立つリンクボタン */
-        .link-container {
-            padding: 15px;
-            text-align: center;
+        /* 表のすぐ下に配置される目立つリンクエリア */
+        .link-area {
+            padding: 10px;
             background-color: #f8f9fa;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            z-index: 20;
         }
         .btn-link {
-            display: inline-block;
+            display: block;
             background-color: #007bff;
             color: white;
-            padding: 12px 24px;
+            padding: 10px;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: bold;
-            font-size: 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: background-color 0.2s;
-        }
-        .btn-link:active {
-            background-color: #0056b3;
-            transform: translateY(2px);
-            box-shadow: none;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .btn-url {
             display: block;
-            margin-top: 8px;
-            font-size: 0.7rem;
-            color: #666;
+            margin-top: 5px;
+            font-size: 0.65rem;
+            color: #4dabf7;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -134,13 +132,13 @@
         </thead>
         <tbody id="table-body"></tbody>
     </table>
+</div>
 
-    <div class="link-container">
-        <a href="https://www.kodomocube.com/" target="_blank" class="btn-link">
-            手順を確認する (KODOMO CUBE)
-        </a>
-        <span class="btn-url">https://www.kodomocube.com/</span>
-    </div>
+<div class="link-area">
+    <a href="https://www.kodomocube.com/" target="_blank" class="btn-link">
+        手順を確認する (KODOMO CUBE)
+    </a>
+    <a href="https://www.kodomocube.com/" target="_blank" class="btn-url">https://www.kodomocube.com/</a>
 </div>
 
 <script>
