@@ -26,6 +26,7 @@
             flex: 1;
             overflow: auto;
             position: relative;
+            -webkit-overflow-scrolling: touch;
         }
         table {
             border-collapse: collapse;
@@ -36,8 +37,7 @@
             border: 1.5px solid var(--border-color); 
             text-align: center;
             padding: 0;
-            /* 21種を1画面に入れるため高さを28pxに調整 */
-            height: 28px; 
+            height: 26px; /* 21種を収めるためさらに圧縮 */
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
@@ -65,7 +65,7 @@
             position: sticky;
             top: 0;
             z-index: 11;
-            height: 32px;
+            height: 30px;
         }
         
         .sun { color: #ff5e5e; background-color: #fff5f5; }
@@ -81,7 +81,7 @@
             background-color: var(--checked-bg) !important;
             color: white;
             position: relative;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         td.checked::after {
             content: '〇';
@@ -92,21 +92,34 @@
             border-left: 2.5px solid #000 !important;
         }
 
-        /* フッターリンクの調整 */
-        .footer {
-            background: #1a1a1a;
-            color: #ccc;
-            padding: 10px;
+        /* 目立つリンクボタン */
+        .link-container {
+            padding: 15px;
             text-align: center;
-            font-size: 0.75rem;
+            background-color: #f8f9fa;
         }
-        .footer a {
-            color: #4dabf7;
+        .btn-link {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
             text-decoration: none;
-            word-break: break-all;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
         }
-        .footer a:hover {
-            text-decoration: underline;
+        .btn-link:active {
+            background-color: #0056b3;
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+        .btn-url {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: #666;
         }
     </style>
 </head>
@@ -121,10 +134,13 @@
         </thead>
         <tbody id="table-body"></tbody>
     </table>
-</div>
 
-<div class="footer">
-    手順の確認：<a href="https://www.kodomocube.com/" target="_blank">https://www.kodomocube.com/</a>
+    <div class="link-container">
+        <a href="https://www.kodomocube.com/" target="_blank" class="btn-link">
+            手順を確認する (KODOMO CUBE)
+        </a>
+        <span class="btn-url">https://www.kodomocube.com/</span>
+    </div>
 </div>
 
 <script>
