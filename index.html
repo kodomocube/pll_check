@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PLL Daily Check List</title>
+    <title>PLLデイリーチェック</title>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -112,7 +112,7 @@
 </head>
 <body>
 
-<h1>PLL Daily Check List</h1>
+<h1>PLLデイリーチェック</h1>
 
 <div class="table-wrapper" id="scroll-container">
     <table id="main-table">
@@ -132,14 +132,13 @@
 </div>
 
 <script>
-    // 並び替え: T, Yを先頭。A, EをVの次へ移動。
     const pllList = [
-        "T", "Y",               // 先頭
-        "Ua", "Ub", "H", "Z",   // エッジ
+        "T", "Y",
+        "Ua", "Ub", "H", "Z",
         "Ja", "Jb", "Ra", "Rb", "F", "V", 
-        "Aa", "Ab", "E",        // Vの次に移動
-        "Ga", "Gb", "Gc", "Gd", // G-Perms
-        "Na", "Nb"              // 最後
+        "Aa", "Ab", "E",
+        "Ga", "Gb", "Gc", "Gd",
+        "Na", "Nb"
     ];
     
     const startDate = new Date(2025, 0, 1);
